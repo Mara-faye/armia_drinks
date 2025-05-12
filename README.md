@@ -1,5 +1,5 @@
-#Drinks animated Be Right Back page
-----
+# Drinks animated Be Right Back page
+
 Very barebones and hacky way to deliver an animation that will show random cocktails as requested
 
 Should have an easier to manage config file before it's ready for delivery, variables will be detailed HERE
