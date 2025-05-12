@@ -73,7 +73,7 @@ const buildMix = () => {
 
 const emptyAll = () => {
     mixers.forEach(el => toggleGroup(el, '00'));
-    toggleGroup('shaker', '00');
+    // toggleGroup('shaker', '00');
 }
 
 const switchDrink = () => {
@@ -110,6 +110,30 @@ const shakeshake = anime.animate('.shaker', {
     loop: false,
     autoplay: false,
     onComplete: utils.cleanInlineStyles
+});
+
+const pourShaker = anime.animate('.shaker', {
+    y: {
+        to: '-8rem',
+        duration: 1200,
+        ease: 'outBack(3)'
+    },
+    x: {
+        to: '8rem',
+        duration: 1200,
+        delay: 0,
+        ease: 'outQuad'
+    },
+    rotate: {
+        to: '-100deg',
+        duration: 800,
+        delay: 200,
+        ease: 'outQuad',
+        composition: 'none'
+    },
+    autoplay: false,
+    alternate: true,
+    loop: 1
 });
 
 const textSlide = anime.animate('.drink_caption, .drink_creator', {
@@ -181,9 +205,11 @@ const attractmode_tl = anime.createTimeline({
 .call(() => shakerSnd.play(), '<<+=500')
 .add ({duration: 300})
 .call(() => emptyAll())
-.call(() => pourSnd.play())
+.sync(pourShaker)
+.call(() => pourSnd.play(), '<<')
 .call(() => iceSnd.play(), '<<+=1200')
-.add({duration: 2000})
+.call(() => toggleGroup('shaker', '00'))
+.add({duration: 500})
 .call(() => glassSnd.play())
 .call(() => switchDrink())
 .sync(guruguru)
