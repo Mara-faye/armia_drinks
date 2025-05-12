@@ -8,6 +8,47 @@ const {
 } = anime;
 const mixers = ['tail', 'dust', 'cosmo', 'tears', 'milky', 'nebula'];
 
+// Global variables for easy adjustment
+const config = {
+    demoName: 'testUser42',
+    mainloopDelay: 2000,
+};
+
+
+// Sound cues configuration
+var shakerSnd = new Howl({
+    src: './assets/ShakerSound.wav',
+    volume: 0.4,
+    loop: false,
+    preload: true,
+    autoplay: false
+});
+var pourSnd = new Howl({
+    src: './assets/pouring-drink.mp3',
+    volume: 0.3,
+    preload: true
+});
+var iceSnd = new Howl({
+    src: './assets/Icecube.wav',
+    volume: 0.2,
+    preload: true
+});
+var glassSnd = new Howl({
+    src: './assets/GlassSlide.wav',
+    volume: 0.7,
+    preload: true
+});
+var selectSnd = new Howl({
+    src: './assets/screen-select-1.wav',
+    volume: 0.4,
+    preload: true
+});
+var selectDoneSnd = new Howl({
+    src: './assets/screen-select-2.wav',
+    volume: 0.4,
+    preload: true
+});
+
 
 const toggleGroup = (group, target) => {
     // Quick way to toggle only a given state of the bottle groups
@@ -38,12 +79,11 @@ const emptyAll = () => {
 const switchDrink = () => {
     let newDrink = utils.randomPick(drinks);
     const urlParams = new URLSearchParams(window.location.search);
-    let userName = urlParams.get('un') ? urlParams.get('un') : 'demoName';
+    let userName = urlParams.get('un') ? urlParams.get('un') : config.demoName;
     utils.set(utils.$('#cocktail'), {
-        'src': `./Drinks/${newDrink.file}` // IMPORTANT switch the route when uploading to Glitch
-        // 'src': `https://cdn.glitch.global/bb0cb468-bc7d-47d6-82ec-351af80e09b2/${newDrink.file}` 
+        'src': `./Drinks/${newDrink.file}`
     });
-    let msg = `Enjoy the ${newDrink.name}, ${userName} !`;
+    let msg = `Enjoy the ${newDrink.name}, ${userName}!`;
     let author = `As created by ${newDrink.creator}`
     utils.set(utils.$('.drink_caption'), {'innerHTML': msg});
     utils.set(utils.$('.drink_creator'), {'innerHTML': author});
@@ -108,31 +148,44 @@ const coaster = anime.animate('#cocktail', {
     autoplay: false,
 });
 
+// Extract this one for a separate definition
+// const alert_tl = anime.createTimeline()
+// .call(() => switchDrink())
+// .sync(guruguru)
+// .sync(coaster, '<<')
+// .sync(textSlide, '<');
 
-const alert_tl = anime.createTimeline()
+// Main Demo loop
+const attractmode_tl = anime.createTimeline({
+    loop: true,
+    loopDelay: config.mainloopDelay
+})
+.call(() => buildMix())
+.call(() => toggleGroup('shaker', '01'))
+.call(() => selectSnd.play())
+.add({duration: 1000})
+.call(() => buildMix())
+.call(() => toggleGroup('shaker', '02'))
+.call(() => selectSnd.play())
+.add({duration: 1000})
+.call(() => buildMix())
+.call(() => toggleGroup('shaker', '03'))
+.call(() => selectSnd.play())
+.add({duration: 1000})
+.call(() => buildMix())
+.call(() => toggleGroup('shaker', '04'))
+.call(() => selectDoneSnd.play())
+.add({duration: 1000})
+.sync(shakeshake)
+.call(() => shakerSnd.play(), '<<')
+.call(() => shakerSnd.play(), '<<+=500')
+.add ({duration: 300})
+.call(() => emptyAll())
+.call(() => pourSnd.play())
+.call(() => iceSnd.play(), '<<+=1200')
+.add({duration: 2000})
+.call(() => glassSnd.play())
 .call(() => switchDrink())
 .sync(guruguru)
 .sync(coaster, '<<')
 .sync(textSlide, '<');
-
-
-const tl = anime.createTimeline({
-    loop: true,
-    loopDelay: 2000
-})
-.call(() => buildMix())
-.call(() => toggleGroup('shaker', '01'))
-.add({duration: 1000})
-.call(() => buildMix())
-.call(() => toggleGroup('shaker', '02'))
-.add({duration: 1000})
-.call(() => buildMix())
-.call(() => toggleGroup('shaker', '03'))
-.add({duration: 1000})
-.call(() => buildMix())
-.call(() => toggleGroup('shaker', '04'))
-.add({duration: 1000})
-.sync(shakeshake)
-.add ({duration: 500})
-.call(() => emptyAll())
-.sync(alert_tl)
