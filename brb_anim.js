@@ -13,7 +13,8 @@ const config = {
     demoName: 'testUser42',
     mainloopDelay: 2000,
     arrowsSpeed: 1000,
-    arrowsDelay: 5000
+    arrowsDelay: 5000,
+    ribbonSpeed: 10000
 };
 
 
@@ -183,6 +184,7 @@ const coaster = anime.animate('#cocktail', {
 
 // Main Demo loop
 const attractmode_tl = anime.createTimeline({
+    autoplay:false, //REMOVE AFTER TESTING
     loop: true,
     loopDelay: config.mainloopDelay
 })
@@ -218,6 +220,7 @@ const attractmode_tl = anime.createTimeline({
 .sync(coaster, '<<')
 .sync(textSlide, '<');
 
+// Neon Arrows loop. Adjust timings with config
 const arrowneons_on_tl = anime.createTimeline({
     autoplay: false
 })
@@ -226,7 +229,7 @@ const arrowneons_on_tl = anime.createTimeline({
 .call(() => toggleGroup('arrows', '02'))
 .add({duration: config.arrowsSpeed})
 .call(() => toggleGroup('arrows', '03'))
-.add({duration: config.arrowsDelay})
+.add({duration: config.arrowsDelay});
 
 const arrowneons_off_tl = anime.createTimeline({
     autoplay: false
@@ -236,7 +239,7 @@ const arrowneons_off_tl = anime.createTimeline({
 .call(() => toggleGroup('arrows', '05'))
 .add({duration: config.arrowsSpeed})
 .call(() => toggleGroup('arrows', '06'))
-.add({duration: config.arrowsDelay})
+.add({duration: config.arrowsDelay});
 
 const arrowneons_seq_tl = anime.createTimeline({
     autoplay: false
@@ -246,7 +249,7 @@ const arrowneons_seq_tl = anime.createTimeline({
 .call(() => toggleGroup('arrows', '06'))
 .add({duration: config.arrowsSpeed})
 .call(() => toggleGroup('arrows', '07'))
-.add({duration: config.arrowsDelay})
+.add({duration: config.arrowsDelay});
 
 const arrowneons_tl = anime.createTimeline({
     autoplay: true,
@@ -261,4 +264,17 @@ const arrowneons_tl = anime.createTimeline({
 .sync(arrowneons_seq_tl)
 .sync(arrowneons_on_tl)
 .sync(arrowneons_off_tl)
-.sync(arrowneons_seq_tl)
+.sync(arrowneons_seq_tl);
+
+// Tablet text loop
+const ribbontxt = anime.animate('#tablet_txt', {
+    keyframes: [
+        { x: '-52rem', duration: config.ribbonSpeed},
+        { y: '-3rem', duration: 1000, delay: 5000},
+        { y: '0rem', duration: 1000, delay: 1000}
+    ],
+    autoplay: true,
+    loop: true,
+    ease: 'linear',
+    loopDelay: 5000
+});

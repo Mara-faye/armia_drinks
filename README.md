@@ -7,6 +7,7 @@ Config variable in `brb_anim.js` allows for easy adjustment
 - mainloopDelay: Wait time before demo animation
 - arrowsSpeed: Arrow animation speed. Lower is faster
 - arrowsDelay: Wait time between arrow animations
+- ribbonSpeed: Text scroll speed for tablet ribbon text. Higher is slower
 
 `?un=requester_username` for passing a variable requester, otherwise will default to dummy
 
@@ -14,7 +15,7 @@ Config variable in `brb_anim.js` allows for easy adjustment
 - ~~Variable username~~ 
 - ~~Animated arrows~~
 - ~~Audio elements~~
-- Tablet text
+- ~~Tablet text~~
 - Different presentation in Attract Mode vs. Request
 - Separate alert version that will go on top of other scenes
 - Ability to specify cocktail?
