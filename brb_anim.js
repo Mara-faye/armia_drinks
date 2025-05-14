@@ -12,6 +12,8 @@ const mixers = ['tail', 'dust', 'cosmo', 'tears', 'milky', 'nebula'];
 const config = {
     demoName: 'testUser42',
     mainloopDelay: 2000,
+    arrowsSpeed: 1000,
+    arrowsDelay: 5000
 };
 
 
@@ -215,3 +217,48 @@ const attractmode_tl = anime.createTimeline({
 .sync(guruguru)
 .sync(coaster, '<<')
 .sync(textSlide, '<');
+
+const arrowneons_on_tl = anime.createTimeline({
+    autoplay: false
+})
+.call(() => toggleGroup('arrows', '01'))
+.add({duration: config.arrowsSpeed})
+.call(() => toggleGroup('arrows', '02'))
+.add({duration: config.arrowsSpeed})
+.call(() => toggleGroup('arrows', '03'))
+.add({duration: config.arrowsDelay})
+
+const arrowneons_off_tl = anime.createTimeline({
+    autoplay: false
+})
+.call(() => toggleGroup('arrows', '04'))
+.add({duration: config.arrowsSpeed})
+.call(() => toggleGroup('arrows', '05'))
+.add({duration: config.arrowsSpeed})
+.call(() => toggleGroup('arrows', '06'))
+.add({duration: config.arrowsDelay})
+
+const arrowneons_seq_tl = anime.createTimeline({
+    autoplay: false
+})
+.call(() => toggleGroup('arrows', '01'))
+.add({duration: config.arrowsSpeed})
+.call(() => toggleGroup('arrows', '06'))
+.add({duration: config.arrowsSpeed})
+.call(() => toggleGroup('arrows', '07'))
+.add({duration: config.arrowsDelay})
+
+const arrowneons_tl = anime.createTimeline({
+    autoplay: true,
+    loop: true,
+    delay: config.arrowsDelay,
+    loopDelay: config.arrowsDelay
+})
+.sync(arrowneons_on_tl)
+.sync(arrowneons_on_tl)
+.sync(arrowneons_off_tl)
+.sync(arrowneons_off_tl)
+.sync(arrowneons_seq_tl)
+.sync(arrowneons_on_tl)
+.sync(arrowneons_off_tl)
+.sync(arrowneons_seq_tl)

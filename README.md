@@ -2,14 +2,18 @@
 
 Very barebones and hacky way to deliver an animation that will show random cocktails as requested
 
-Should have an easier to manage config file before it's ready for delivery, variables will be detailed HERE
+Config variable in `brb_anim.js` allows for easy adjustment
+- demoName: Dummy Twitch username
+- mainloopDelay: Wait time before demo animation
+- arrowsSpeed: Arrow animation speed. Lower is faster
+- arrowsDelay: Wait time between arrow animations
 
 `?un=requester_username` for passing a variable requester, otherwise will default to dummy
 
 ### TO-DO
 - ~~Variable username~~ 
-- Animated arrows
-- Audio elements
+- ~~Animated arrows~~
+- ~~Audio elements~~
 - Tablet text
 - Different presentation in Attract Mode vs. Request
 - Separate alert version that will go on top of other scenes
