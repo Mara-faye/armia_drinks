@@ -120,8 +120,10 @@ body {
     opacity: 0;
     z-index: 10;
     /* Scanline effect */
-    color: transparent;    
+    color: transparent;
+    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-background-clip: text;
     background-image: linear-gradient(to top, var(--neon-color), var(--neon-color),
         var(--neon-brighter), var(--neon-brighter));
     background-repeat: repeat-y;

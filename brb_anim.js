@@ -10,8 +10,7 @@ const mixers = ['tail', 'dust', 'cosmo', 'tears', 'milky', 'nebula'];
 
 // Global variables for easy adjustment
 const config = {
-    demoName: 'testUser42',
-    mainloopDelay: 2000,
+    mainLoopDelay: 2000,
     arrowsSpeed: 1000,
     arrowsDelay: 5000,
     ribbonSpeed: 10000
@@ -52,7 +51,7 @@ var selectDoneSnd = new Howl({
     preload: true
 });
 
-
+// HELPER FUNCTIONS
 const toggleGroup = (group, target) => {
     // Quick way to toggle only a given state of the bottle groups
     document.getElementById(`${group}_${target}`).classList.remove('hidden');
@@ -62,6 +61,7 @@ const toggleGroup = (group, target) => {
 }
 
 const checkMixer = (mixer) => {
+    // Doesn't go over 3 blips per mixer bottle
     let current = document.querySelectorAll(`img.${mixer}:not(.hidden)`)[0];
     let currentIndex = current.id.substring(current.id.length - 2);
     return currentIndex < 3 ? `0${parseInt(currentIndex)+1}` : false;
@@ -70,29 +70,27 @@ const checkMixer = (mixer) => {
 const buildMix = () => {
     let mixer = utils.randomPick(mixers);
     let nextMix = checkMixer(mixer);
-    // console.info(`Picked candidate ${mixer} ${nextMix}`);
     return nextMix ? addMix(mixer, nextMix) : buildMix();
 }
 
 const emptyAll = () => {
     mixers.forEach(el => toggleGroup(el, '00'));
-    // toggleGroup('shaker', '00');
 }
 
-const switchDrink = () => {
+const switchDrink = (username) => {
+    // Random cocktail selection and appareance
     let newDrink = utils.randomPick(drinks);
-    const urlParams = new URLSearchParams(window.location.search);
-    let userName = urlParams.get('un') ? urlParams.get('un') : config.demoName;
-    utils.set(utils.$('#cocktail'), {
-        'src': `./Drinks/${newDrink.file}`
-    });
-    let msg = `Enjoy the ${newDrink.name}, ${userName}!`;
+    let msg = username==null ? `Armia made herself a ${newDrink.name}~` :
+        `Enjoy the ${newDrink.name}, ${username}!` ;
+    document.getElementById('cocktail').setAttribute('src', `./Drinks/${newDrink.file}`);
     let author = `As created by ${newDrink.creator}`
     utils.set(utils.$('.drink_caption'), {'innerHTML': msg});
     utils.set(utils.$('.drink_creator'), {'innerHTML': author});
     return newDrink.name;
 }
 
+// ANIMATIONS
+// Picks a bottle of mixer
 const addMix = (mixer, nextMix) => {
     toggleGroup(mixer, nextMix);
     anime.animate(`.${mixer}`, {
@@ -106,6 +104,7 @@ const addMix = (mixer, nextMix) => {
     });
 }
 
+// Shaker going side to side
 const shakeshake = anime.animate('.shaker', {
     rotate: [0, -9, 9, -9, 9, -9, 9, -9, 0],
     duration: 1500,
@@ -115,6 +114,7 @@ const shakeshake = anime.animate('.shaker', {
     onComplete: utils.cleanInlineStyles
 });
 
+// Drink being poured out of shaker
 const pourShaker = anime.animate('.shaker', {
     y: {
         to: '-8rem',
@@ -139,6 +139,7 @@ const pourShaker = anime.animate('.shaker', {
     loop: 1
 });
 
+// Text caption sliding from the top
 const textSlide = anime.animate('.drink_caption, .drink_creator', {
     y: {from: '-3rem', to: '2rem', delay: 300},
     opacity: {from: 0, to: 1, duration: 500},
@@ -147,6 +148,7 @@ const textSlide = anime.animate('.drink_caption, .drink_creator', {
     autoplay: false
 });
 
+// Show the neon decoration in a very decadent transition
 const guruguru = anime.animate('.drink_deco', {
     scale: [
         {to: 1.2,   duration: 250, delay: utils.random(500, 1000)},
@@ -168,6 +170,7 @@ const guruguru = anime.animate('.drink_deco', {
     autoplay: false,
 });
 
+// Displays the chosen drink
 const coaster = anime.animate('#cocktail', {
     opacity: {to: 1, duration: 1000},
     filter: {from: 'blur(5px)', to: 'blur(0px)', duration: 1000},
@@ -182,12 +185,14 @@ const coaster = anime.animate('#cocktail', {
 // .sync(coaster, '<<')
 // .sync(textSlide, '<');
 
-// Main Demo loop
+// Main Demo timeline loop. Becomes the Attract Mode with reduced animation.
 const attractmode_tl = anime.createTimeline({
-    autoplay:false, //REMOVE AFTER TESTING
+    autoplay: true,
     loop: true,
-    loopDelay: config.mainloopDelay
+    loopDelay: config.mainLoopDelay
 })
+.call(() => Howler.volume(0.1))
+.add({duration: 1000})
 .call(() => buildMix())
 .call(() => toggleGroup('shaker', '01'))
 .call(() => selectSnd.play())
@@ -218,9 +223,9 @@ const attractmode_tl = anime.createTimeline({
 .call(() => switchDrink())
 .sync(guruguru)
 .sync(coaster, '<<')
-.sync(textSlide, '<');
+.sync(textSlide, '<')
 
-// Neon Arrows loop. Adjust timings with config
+// Neon Arrows timeline loop. Adjust timings with config
 const arrowneons_on_tl = anime.createTimeline({
     autoplay: false
 })
@@ -266,10 +271,10 @@ const arrowneons_tl = anime.createTimeline({
 .sync(arrowneons_off_tl)
 .sync(arrowneons_seq_tl);
 
-// Tablet text loop
+// Tablet text timeline loop
 const ribbontxt = anime.animate('#tablet_txt', {
     keyframes: [
-        { x: '-52rem', duration: config.ribbonSpeed},
+        { x: '-100%', duration: config.ribbonSpeed},
         { y: '-3rem', duration: 1000, delay: 5000},
         { y: '0rem', duration: 1000, delay: 1000}
     ],
@@ -277,4 +282,18 @@ const ribbontxt = anime.animate('#tablet_txt', {
     loop: true,
     ease: 'linear',
     loopDelay: 5000
+});
+
+const request_tl = anime.createTimeline({
+    autoplay: false,
+    loop: false,
+});
+
+// Drink requested as determined by OBS Websocket message
+// Broken for now, timelines are not meshing as they should. Bleh.
+window.addEventListener('obs-drink-req', function(event) {
+    console.log(event.detail);
+    emptyAll();
+    attractmode_tl.revert();
+    // use event.detail.user_req to get the username and stuff
 });
