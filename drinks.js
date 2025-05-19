@@ -1,4 +1,4 @@
-const drinks = [
+export const drinks = [
     {
         name: 'Bartender',
         creator: 'ArmiaStars',

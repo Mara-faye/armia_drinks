@@ -1,21 +1,8 @@
-var anime;
-const {
-    animate,
-    utils,
-    createTimeline,
-    createTimer,
-    eases
-} = anime;
+import { config } from './config.js';
+import { drinks } from './drinks.js';
+import { animate, utils, createTimeline, createTimer, eases} from './anime.esm.js';
+
 const mixers = ['tail', 'dust', 'cosmo', 'tears', 'milky', 'nebula'];
-
-// Global variables for easy adjustment
-const config = {
-    mainLoopDelay: 2000,
-    arrowsSpeed: 1000,
-    arrowsDelay: 5000,
-    ribbonSpeed: 10000
-};
-
 
 // Sound cues configuration
 var shakerSnd = new Howl({
@@ -77,6 +64,12 @@ const emptyAll = () => {
     mixers.forEach(el => toggleGroup(el, '00'));
 }
 
+const mix_in_shaker = (level) => {
+    buildMix();
+    toggleGroup('shaker', level);
+    selectSnd.play();
+}
+
 const switchDrink = (username) => {
     // Random cocktail selection and appareance
     let newDrink = utils.randomPick(drinks);
@@ -93,7 +86,7 @@ const switchDrink = (username) => {
 // Picks a bottle of mixer
 const addMix = (mixer, nextMix) => {
     toggleGroup(mixer, nextMix);
-    anime.animate(`.${mixer}`, {
+    animate(`.${mixer}`, {
         y: '-50px',
         scale: 1.2,
         rotate: utils.random(-5 , 5) + 'deg',
@@ -105,7 +98,7 @@ const addMix = (mixer, nextMix) => {
 }
 
 // Shaker going side to side
-const shakeshake = anime.animate('.shaker', {
+const shakeshake = animate('.shaker', {
     rotate: [0, -9, 9, -9, 9, -9, 9, -9, 0],
     duration: 1500,
     ease: 'outBack(3)',
@@ -115,7 +108,7 @@ const shakeshake = anime.animate('.shaker', {
 });
 
 // Drink being poured out of shaker
-const pourShaker = anime.animate('.shaker', {
+const pourShaker = animate('.shaker', {
     y: {
         to: '-8rem',
         duration: 1200,
@@ -140,7 +133,7 @@ const pourShaker = anime.animate('.shaker', {
 });
 
 // Text caption sliding from the top
-const textSlide = anime.animate('.drink_caption, .drink_creator', {
+const creator_TextSlide = animate('.drink_creator', {
     y: {from: '-3rem', to: '2rem', delay: 300},
     opacity: {from: 0, to: 1, duration: 500},
     duration: 1000,
@@ -148,8 +141,16 @@ const textSlide = anime.animate('.drink_caption, .drink_creator', {
     autoplay: false
 });
 
+const caption_TextSlide = animate('.drink_caption', {
+    y: {from: '5rem', to: '2rem', delay: 300},
+    opacity: {from: 0, to: 1, duration: 500},
+    duration: 1000,
+    ease: 'outCirc',
+    autoplay: false
+});
+
 // Show the neon decoration in a very decadent transition
-const guruguru = anime.animate('.drink_deco', {
+const guruguru = animate('.drink_deco', {
     scale: [
         {to: 1.2,   duration: 250, delay: utils.random(500, 1000)},
         {to: 0.8,   duration: 500, delay: 100},
@@ -160,73 +161,35 @@ const guruguru = anime.animate('.drink_deco', {
     ],
     rotate: [
         {to: 180, duration: 2000},
-        {from: 180, to: 360, duration: 4000, ease: 'linear'}
+        {from: 180, to: 360, duration: config.drinkDuration, ease: 'linear'}
     ],
-    opacity: [
-        {from: 0, to: 1, duration: 500}
-    ],
-    duration: 10000,
     loop: false,
-    autoplay: false,
+    autoplay: false
 });
 
 // Displays the chosen drink
-const coaster = anime.animate('#cocktail', {
-    opacity: {to: 1, duration: 1000},
+const coaster = animate('#cocktail', {
+    opacity: {from: 0, to: 1, duration: 1000},
     filter: {from: 'blur(5px)', to: 'blur(0px)', duration: 1000},
     scale: {from: 0.6, to: 1, duration: 800, ease: 'outBack(2)'},
     autoplay: false,
 });
 
-// Extract this one for a separate definition
-// const alert_tl = anime.createTimeline()
-// .call(() => switchDrink())
-// .sync(guruguru)
-// .sync(coaster, '<<')
-// .sync(textSlide, '<');
+const showDrink = animate('#drink_container, .drink_deco', {
+    opacity: { from: 0, to: 1, duration: 500, composition: 'none'},
+    autoplay: false,
+    loop: false
+});
 
-// Main Demo timeline loop. Becomes the Attract Mode with reduced animation.
-const attractmode_tl = anime.createTimeline({
-    autoplay: true,
-    loop: true,
-    loopDelay: config.mainLoopDelay
-})
-.call(() => Howler.volume(0.1))
-.add({duration: 1000})
-.call(() => buildMix())
-.call(() => toggleGroup('shaker', '01'))
-.call(() => selectSnd.play())
-.add({duration: 1000})
-.call(() => buildMix())
-.call(() => toggleGroup('shaker', '02'))
-.call(() => selectSnd.play())
-.add({duration: 1000})
-.call(() => buildMix())
-.call(() => toggleGroup('shaker', '03'))
-.call(() => selectSnd.play())
-.add({duration: 1000})
-.call(() => buildMix())
-.call(() => toggleGroup('shaker', '04'))
-.call(() => selectDoneSnd.play())
-.add({duration: 1000})
-.sync(shakeshake)
-.call(() => shakerSnd.play(), '<<')
-.call(() => shakerSnd.play(), '<<+=500')
-.add ({duration: 300})
-.call(() => emptyAll())
-.sync(pourShaker)
-.call(() => pourSnd.play(), '<<')
-.call(() => iceSnd.play(), '<<+=1200')
-.call(() => toggleGroup('shaker', '00'))
-.add({duration: 500})
-.call(() => glassSnd.play())
-.call(() => switchDrink())
-.sync(guruguru)
-.sync(coaster, '<<')
-.sync(textSlide, '<')
+// Hides the whole thing
+const hideDrink = animate('#drink_container', {
+    opacity: {from: 1, to: 0, duration: 500, composition: 'none'},
+    loop: false,
+    autoplay: false
+});
 
 // Neon Arrows timeline loop. Adjust timings with config
-const arrowneons_on_tl = anime.createTimeline({
+const arrowneons_on_tl = createTimeline({
     autoplay: false
 })
 .call(() => toggleGroup('arrows', '01'))
@@ -236,7 +199,7 @@ const arrowneons_on_tl = anime.createTimeline({
 .call(() => toggleGroup('arrows', '03'))
 .add({duration: config.arrowsDelay});
 
-const arrowneons_off_tl = anime.createTimeline({
+const arrowneons_off_tl = createTimeline({
     autoplay: false
 })
 .call(() => toggleGroup('arrows', '04'))
@@ -246,7 +209,7 @@ const arrowneons_off_tl = anime.createTimeline({
 .call(() => toggleGroup('arrows', '06'))
 .add({duration: config.arrowsDelay});
 
-const arrowneons_seq_tl = anime.createTimeline({
+const arrowneons_seq_tl = createTimeline({
     autoplay: false
 })
 .call(() => toggleGroup('arrows', '01'))
@@ -256,7 +219,7 @@ const arrowneons_seq_tl = anime.createTimeline({
 .call(() => toggleGroup('arrows', '07'))
 .add({duration: config.arrowsDelay});
 
-const arrowneons_tl = anime.createTimeline({
+const arrowneons_tl = createTimeline({
     autoplay: true,
     loop: true,
     delay: config.arrowsDelay,
@@ -272,7 +235,7 @@ const arrowneons_tl = anime.createTimeline({
 .sync(arrowneons_seq_tl);
 
 // Tablet text timeline loop
-const ribbontxt = anime.animate('#tablet_txt', {
+const ribbontxt = animate('#tablet_txt', {
     keyframes: [
         { x: '-100%', duration: config.ribbonSpeed},
         { y: '-3rem', duration: 1000, delay: 5000},
@@ -284,16 +247,103 @@ const ribbontxt = anime.animate('#tablet_txt', {
     loopDelay: 5000
 });
 
-const request_tl = anime.createTimeline({
-    autoplay: false,
-    loop: false,
-});
+// Main Attract mode timeline loop. Reduced animation and sound volume
+const attractmode_tl = createTimeline({
+    autoplay: true,
+    loop: true,
+    delay: config.attractDelayDelay,
+    loopDelay: config.attractLoopDelay
+})
+.call(() => Howler.volume(config.attractVolume))
+.call(() => mix_in_shaker('01'))
+.add({duration: config.attractSelectSpeed})
+.call(() => mix_in_shaker('02'))
+.add({duration: config.attractSelectSpeed})
+.call(() => mix_in_shaker('03'))
+.add({duration: config.attractSelectSpeed})
+.call(() => mix_in_shaker('04'))
+.add({duration: config.attractSelectSpeed})
+.sync(shakeshake)
+.call(() => shakerSnd.play(), '<<')
+.call(() => shakerSnd.play(), '<<+=500')
+.add ({duration: 300})
+.call(() => emptyAll())
+.call(() => switchDrink()) 
+.sync(pourShaker)
+.call(() => pourSnd.play(), '<<')
+.call(() => iceSnd.play(), '<<+=1200')
+.call(() => toggleGroup('shaker', '00'))
+.add({duration: 500})
+.call(() => glassSnd.play())
+.label('attractDrink')
+.sync(showDrink)
+.sync(coaster, 'attractDrink')
+.sync(caption_TextSlide, 'attractDrink')
+.sync(creator_TextSlide, 'attractDrink')
+.add({duration: config.drinkDuration})
+.sync(hideDrink)
+
+// Request drink timeline. No loop, reverts to attract after playing out
+const request_tl = createTimeline({
+        autoplay: false,
+        loop: false,
+        onComplete: () => {
+            request_tl.revert();
+            attractmode_tl.play();
+        }
+    })
+    .call(() => mix_in_shaker('01'))
+    .add({duration: config.requestSelectSpeed})
+    .call(() => mix_in_shaker('02'))
+    .add({duration: config.requestSelectSpeed})
+    .call(() => mix_in_shaker('03'))
+    .add({duration: config.requestSelectSpeed})
+    .call(() => mix_in_shaker('04'))
+    .add({duration: config.requestSelectSpeed})
+    .sync(shakeshake)
+    .call(() => shakerSnd.play(), '<<')
+    .call(() => shakerSnd.play(), '<<+=500')
+    .add ({duration: 300})
+    .call(() => emptyAll())
+    .sync(pourShaker)
+    .call(() => pourSnd.play(), '<<')
+    .call(() => iceSnd.play(), '<<+=1200')
+    .call(() => toggleGroup('shaker', '00'))
+    .add({duration: 500})
+    .call(() => glassSnd.play())
+    .label('drink')
+    .sync(showDrink)
+    .sync(coaster, 'drink')
+    .sync(caption_TextSlide, 'drink')
+    .sync(creator_TextSlide, 'drink')
+    .sync(guruguru, 'drink')
+    .sync(hideDrink);
+
+const requestedDrink = (username) => {
+    console.log(username);
+    emptyAll();
+    toggleGroup('shaker', '00');
+    attractmode_tl.revert();
+    Howler.volume(config.requestVolume);
+    switchDrink(username);
+    request_tl.play();
+};
 
 // Drink requested as determined by OBS Websocket message
 // Broken for now, timelines are not meshing as they should. Bleh.
 window.addEventListener('obs-drink-req', function(event) {
-    console.log(event.detail);
-    emptyAll();
-    attractmode_tl.revert();
-    // use event.detail.user_req to get the username and stuff
+    // console.log(event.detail);
+    let username = `${event.detail.user_req}`;
+    requestedDrink(username);
+});
+
+// DEBUG DELETE BEFORE DELIVERY
+window.addEventListener('keydown', (event) => {
+    if(event.code == 'KeyT') {
+        requestedDrink('Aoshi_VT');
+    } else if(event.code == 'KeyH') {
+        requestedDrink('Pochita42');
+    } else {
+        console.info('Attract Mode should be running rn');
+    }
 });
