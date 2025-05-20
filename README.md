@@ -42,9 +42,10 @@ Requires sending a OBS Raw websocket message to specify a username. This is to i
 - ~~Audio elements~~
 - ~~Tablet text~~
 - ~~Different presentation in Attract Mode vs. Request~~
-- Separate alert version that will go on top of other scenes
+- ~~Separate alert version that will go on top of other scenes~~
 - ~~Resolve outstanding issues with OBS Browser Source (Font, drink, username)~~
 - ~~Fix bug when going back to attract after a request~~
+- Testing and integration of Alert mode. Extra slide animation?
 ----
 
 Replace the Twich Redeem Action with Delivery

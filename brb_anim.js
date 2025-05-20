@@ -1,6 +1,6 @@
 import { config } from './config.js';
 import { drinks } from './drinks.js';
-import { animate, utils, createTimeline, createTimer, eases} from './anime.esm.js';
+import { animate, utils, createTimeline } from './anime.esm.js';
 
 const mixers = ['tail', 'dust', 'cosmo', 'tears', 'milky', 'nebula'];
 

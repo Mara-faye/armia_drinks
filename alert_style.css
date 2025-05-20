@@ -1,0 +1,51 @@
+@font-face {
+    font-family: 'Press Start 2P';
+    font-style: 'Regular';
+    src: url(./assets/PressStart2P-Regular.ttf);
+}
+
+body {
+    background-color: rgba(0, 0, 0, 0);
+    margin: 0px;
+    width: auto;
+    max-width: 800px;
+    height: auto;
+    max-height: 800px;
+    overflow: hidden;
+}
+
+#drink_container {
+    display: grid;
+    grid-template: 1fr / 1fr;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 5% 0px;
+}
+.drink_deco {
+    grid-area: 1 / 1;
+    width: 70%;
+}
+.drink {
+    grid-area: 1 / 1;
+    z-index: 5;
+    width: 70%
+}
+
+.drink_caption, .drink_creator {
+    margin: 0;
+    font-family: 'Press Start 2p';
+    font-size: 3vw;
+    display: block;
+    text-align: center;
+    grid-area: 1 / 1;
+    place-self: end center;
+    z-index: 10;
+    color: rgb(231, 108, 6);
+    -webkit-text-stroke: 0.3px white;
+}
+
+.drink_creator {
+    font-size: 2vw;
+    place-self: start center;
+}
