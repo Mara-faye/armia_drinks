@@ -44,7 +44,7 @@ Requires sending a OBS Raw websocket message to specify a username. This is to i
 - ~~Different presentation in Attract Mode vs. Request~~
 - Separate alert version that will go on top of other scenes
 - ~~Resolve outstanding issues with OBS Browser Source (Font, drink, username)~~
-- Fix bug when going back to attract after a request
+- ~~Fix bug when going back to attract after a request~~
 ----
 
 Replace the Twich Redeem Action with Delivery

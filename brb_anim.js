@@ -289,7 +289,7 @@ const request_tl = createTimeline({
         loop: false,
         onComplete: () => {
             request_tl.revert();
-            attractmode_tl.play();
+            attractmode_tl.restart();
         }
     })
     .call(() => mix_in_shaker('01'))
@@ -321,6 +321,7 @@ const request_tl = createTimeline({
 
 const requestedDrink = (username) => {
     console.log(username);
+    hideDrink.complete();
     emptyAll();
     toggleGroup('shaker', '00');
     attractmode_tl.revert();
