@@ -7,8 +7,7 @@ import { animate, utils, createTimeline } from './anime.esm.js';
 var glassSnd = new Howl({
     src: './assets/GlassSlide.wav',
     volume: 0.7,
-    preload: true,
-    onplay: (id) => console.info(id)
+    preload: true
 });
 var bellSnd = new Howl({
     src: './assets/Bell.wav',
@@ -84,9 +83,6 @@ const hideDrink = animate('#drink_container', {
 const alert_tl = createTimeline({
     autoplay: false,
     loop: false,
-    onComplete: () => {
-        alert_tl.revert();
-    }
 })
 .label('drink')
 .sync(showDrink)
@@ -101,7 +97,7 @@ const alert_tl = createTimeline({
 const requestedDrink = (username) => {
     console.log(username);
     switchDrink(username);
-    alert_tl.play();
+    alert_tl.restart();
 }
 
 //  TO-DO logic for actual user request, finish this up in the morning
@@ -110,6 +106,3 @@ window.addEventListener('obs-drink-req', function(event) {
     let username = `${event.detail.user_req}`;
     requestedDrink(username);
 });
-
-// DEBUG DELETE BEFORE DELIVERY
-window.tester = requestedDrink
