@@ -236,15 +236,10 @@ const arrowneons_tl = createTimeline({
 
 // Tablet text timeline loop
 const ribbontxt = animate('#tablet_txt', {
-    keyframes: [
-        { x: '-100%', duration: config.ribbonSpeed},
-        { y: '-3rem', duration: 1000, delay: 5000},
-        { y: '0rem', duration: 1000, delay: 1000}
-    ],
+    x: {to: '-52rem', duration: config.ribbonSpeed},
     autoplay: true,
     loop: true,
-    ease: 'linear',
-    loopDelay: 5000
+    ease: 'linear'
 });
 
 // Main Attract mode timeline loop. Reduced animation and sound volume
