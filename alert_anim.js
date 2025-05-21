@@ -4,6 +4,18 @@ import { animate, utils, createTimeline } from './anime.esm.js';
 
 // Remember to refactor since there's no Attract Mode here
 
+var glassSnd = new Howl({
+    src: './assets/GlassSlide.wav',
+    volume: 0.7,
+    preload: true,
+    onplay: (id) => console.info(id)
+});
+var bellSnd = new Howl({
+    src: './assets/Bell.wav',
+    volume: 0.4,
+    preload: true
+});
+
 const switchDrink = (username) => {
     // Random cocktail selection and appareance
     let newDrink = utils.randomPick(drinks);
@@ -70,19 +82,27 @@ const hideDrink = animate('#drink_container', {
 });
 
 const alert_tl = createTimeline({
-    autoplay: true,
-    loop: true,
-    // temporary, disable so it shows only on request
-    loopDelay: 3000
+    autoplay: false,
+    loop: false,
+    onComplete: () => {
+        alert_tl.revert();
+    }
 })
-.call(() => switchDrink('Aoshi_VT'))
 .label('drink')
 .sync(showDrink)
+.call(() => glassSnd.play())
 .sync(coaster, 'drink')
 .sync(caption_TextSlide, 'drink')
 .sync(creator_TextSlide, 'drink')
+.call(() => bellSnd.play())
 .sync(guruguru, 'drink')
 .sync(hideDrink);
+
+const requestedDrink = (username) => {
+    console.log(username);
+    switchDrink(username);
+    alert_tl.play();
+}
 
 //  TO-DO logic for actual user request, finish this up in the morning
 window.addEventListener('obs-drink-req', function(event) {
@@ -90,3 +110,6 @@ window.addEventListener('obs-drink-req', function(event) {
     let username = `${event.detail.user_req}`;
     requestedDrink(username);
 });
+
+// DEBUG DELETE BEFORE DELIVERY
+window.tester = requestedDrink

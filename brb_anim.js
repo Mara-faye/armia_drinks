@@ -67,7 +67,7 @@ const emptyAll = () => {
 const mix_in_shaker = (level) => {
     buildMix();
     toggleGroup('shaker', level);
-    selectSnd.play();
+    level == '04' ? selectDoneSnd.play() : selectSnd.play();
 }
 
 const switchDrink = (username) => {
@@ -331,20 +331,8 @@ const requestedDrink = (username) => {
 };
 
 // Drink requested as determined by OBS Websocket message
-// Broken for now, timelines are not meshing as they should. Bleh.
 window.addEventListener('obs-drink-req', function(event) {
     // console.log(event.detail);
     let username = `${event.detail.user_req}`;
     requestedDrink(username);
-});
-
-// DEBUG DELETE BEFORE DELIVERY
-window.addEventListener('keydown', (event) => {
-    if(event.code == 'KeyT') {
-        requestedDrink('Aoshi_VT');
-    } else if(event.code == 'KeyH') {
-        requestedDrink('Pochita42');
-    } else {
-        console.info('Attract Mode should be running rn');
-    }
 });
