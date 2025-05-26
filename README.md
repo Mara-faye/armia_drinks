@@ -16,6 +16,9 @@ Config file `config.js` allows for easy adjustment
 
 - ribbonSpeed: Text scroll speed for tablet ribbon text. Higher is slower
 
+- drinkDuration: How long the drink stays on the screen
+- attractDrinkDuration: How long the drink stays on the screen during Attract mode. Faster than the regular.
+
 
 Requires sending a OBS Raw websocket message to specify a username. This is to integrate Streamer.bot properly for handling Twitch Reward requests. 
 `UserDrink` variable is not used at the moment in the visualization.
@@ -47,6 +50,8 @@ Requires sending a OBS Raw websocket message to specify a username. This is to i
 - ~~Resolve outstanding issues with OBS Browser Source (Font, drink, username)~~
 - ~~Fix bug when going back to attract after a request~~
 - ~~Testing and integration of Alert mode. Extra slide animation?~~
+- Refactor to work with streamerbot-client
+- Send chat the drink information in Alert           
 ----
 
 

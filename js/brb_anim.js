@@ -1,39 +1,39 @@
-import { config } from './config.js';
+import { config } from '../config.js';
 import { drinks } from './drinks.js';
-import { animate, utils, createTimeline } from './anime.esm.js';
+import { animate, utils, createTimeline } from '../lib/anime.esm.js';
 
 const mixers = ['tail', 'dust', 'cosmo', 'tears', 'milky', 'nebula'];
 
 // Sound cues configuration
 var shakerSnd = new Howl({
-    src: './assets/ShakerSound.wav',
+    src: '../assets/ShakerSound.wav',
     volume: 0.4,
     loop: false,
     preload: true,
     autoplay: false
 });
 var pourSnd = new Howl({
-    src: './assets/pouring-drink.mp3',
+    src: '../assets/pouring-drink.mp3',
     volume: 0.3,
     preload: true
 });
 var iceSnd = new Howl({
-    src: './assets/Icecube.wav',
+    src: '../assets/Icecube.wav',
     volume: 0.2,
     preload: true
 });
 var glassSnd = new Howl({
-    src: './assets/GlassSlide.wav',
+    src: '../assets/GlassSlide.wav',
     volume: 0.7,
     preload: true
 });
 var selectSnd = new Howl({
-    src: './assets/screen-select-1.wav',
+    src: '../assets/screen-select-1.wav',
     volume: 0.4,
     preload: true
 });
 var selectDoneSnd = new Howl({
-    src: './assets/screen-select-2.wav',
+    src: '../assets/screen-select-2.wav',
     volume: 0.4,
     preload: true
 });
@@ -275,7 +275,7 @@ const attractmode_tl = createTimeline({
 .sync(coaster, 'attractDrink')
 .sync(caption_TextSlide, 'attractDrink')
 .sync(creator_TextSlide, 'attractDrink')
-.add({duration: config.drinkDuration})
+.add({duration: config.attractDrinkDuration})
 .sync(hideDrink)
 
 // Request drink timeline. No loop, reverts to attract after playing out

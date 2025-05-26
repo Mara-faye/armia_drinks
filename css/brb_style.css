@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'Press Start 2P';
     font-style: 'Regular';
-    src: url(./assets/PressStart2P-Regular.ttf);
+    src: url(../assets/PressStart2P-Regular.ttf);
 }
 
 body {
@@ -15,7 +15,7 @@ body {
     opacity: 0;
 }
 #bar {
-    background-image: url(./assets/BRB_BGRaster_BasePlate.jpg);
+    background-image: url(../assets/BRB_BGRaster_BasePlate.jpg);
     height: 100%;
 }
 

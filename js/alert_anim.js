@@ -1,16 +1,16 @@
-import { config } from './config.js';
+import { config } from '../config.js';
 import { drinks } from './drinks.js';
-import { animate, utils, createTimeline } from './anime.esm.js';
+import { animate, utils, createTimeline } from '../lib/anime.esm.js';
 
 // Remember to refactor since there's no Attract Mode here
 
 var glassSnd = new Howl({
-    src: './assets/GlassSlide.wav',
+    src: '../assets/GlassSlide.wav',
     volume: 0.7,
     preload: true
 });
 var bellSnd = new Howl({
-    src: './assets/Bell.wav',
+    src: '../assets/Bell.wav',
     volume: 0.4,
     preload: true
 });
