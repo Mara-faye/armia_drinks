@@ -2,8 +2,7 @@ import { config } from '../config.js';
 import { drinks } from './drinks.js';
 import { animate, utils, createTimeline } from '../lib/anime.esm.js';
 
-// Remember to refactor since there's no Attract Mode here
-
+// Sounds
 var glassSnd = new Howl({
     src: '../assets/GlassSlide.wav',
     volume: 0.7,
@@ -14,6 +13,9 @@ var bellSnd = new Howl({
     volume: 0.4,
     preload: true
 });
+
+// Helper functions
+var lastDrink = '';
 
 const switchDrink = (username) => {
     // Random cocktail selection and appareance
@@ -26,7 +28,19 @@ const switchDrink = (username) => {
     return newDrink.name;
 }
 
-// Text caption sliding from the top
+const requestedDrink = (username) => {
+    lastDrink = switchDrink(username);
+    alert_tl.restart();
+}
+
+// Streamerbot client set-up
+const SBclient = new StreamerbotClient({
+    host: '127.0.0.1',
+    port: 8080,
+    endpoint: '/'
+});
+
+// Animations
 const creator_TextSlide = animate('.drink_creator', {
     y: {from: '-3rem', to: '0rem', delay: 300},
     opacity: {from: 0, to: 1, duration: 500},
@@ -73,13 +87,13 @@ const showDrink = animate('#drink_container, .drink_deco', {
     loop: false
 });
 
-// Hides the whole thing
 const hideDrink = animate('#drink_container', {
     opacity: {from: 1, to: 0, duration: 500, composition: 'none'},
     loop: false,
     autoplay: false
 });
 
+// Timeline
 const alert_tl = createTimeline({
     autoplay: false,
     loop: false,
@@ -94,15 +108,23 @@ const alert_tl = createTimeline({
 .sync(guruguru, 'drink')
 .sync(hideDrink);
 
-const requestedDrink = (username) => {
-    console.log(username);
-    switchDrink(username);
-    alert_tl.restart();
-}
+// Event listeners
 
-//  TO-DO logic for actual user request, finish this up in the morning
-window.addEventListener('obs-drink-req', function(event) {
-    // console.log(event.detail);
-    let username = `${event.detail.user_req}`;
-    requestedDrink(username);
+// DEPRECATED using the SB listener instead
+// window.addEventListener('obs-drink-req', function(event) {
+//     // console.log(event.detail);
+//     let username = `${event.detail.user_req}`;
+//     requestedDrink(username);
+// });
+
+SBclient.on('Twitch.RewardRedemption', (data) => {
+    if (data.data.reward.title == "Daily Drink") {
+        requestedDrink(data.data.user_name);
+        SBclient.doAction({"name": 'Drink Chat feedback'},
+            {
+                "reqUser": data.data.user_login,
+                "reqDrink": lastDrink
+            }
+        );
+    }
 });

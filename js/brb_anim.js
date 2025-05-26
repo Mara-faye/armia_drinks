@@ -4,6 +4,9 @@ import { animate, utils, createTimeline } from '../lib/anime.esm.js';
 
 const mixers = ['tail', 'dust', 'cosmo', 'tears', 'milky', 'nebula'];
 
+// Drink container not sticking to opacity: 0 on Attract loop restart
+// Please check that out before update, but focus on Alert for now
+
 // Sound cues configuration
 var shakerSnd = new Howl({
     src: '../assets/ShakerSound.wav',
@@ -277,6 +280,7 @@ const attractmode_tl = createTimeline({
 .sync(creator_TextSlide, 'attractDrink')
 .add({duration: config.attractDrinkDuration})
 .sync(hideDrink)
+
 
 // Request drink timeline. No loop, reverts to attract after playing out
 const request_tl = createTimeline({
