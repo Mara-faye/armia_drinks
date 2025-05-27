@@ -6,6 +6,7 @@ const mixers = ['tail', 'dust', 'cosmo', 'tears', 'milky', 'nebula'];
 
 // Drink container not sticking to opacity: 0 on Attract loop restart
 // Please check that out before update, but focus on Alert for now
+// Fix Event Listener to follow either Twitch.RewardRedemption of Raw.Action
 
 // Sound cues configuration
 var shakerSnd = new Howl({
@@ -84,6 +85,22 @@ const switchDrink = (username) => {
     utils.set(utils.$('.drink_creator'), {'innerHTML': author});
     return newDrink.name;
 }
+
+let drinkActionId, chatActionId = '';
+var lastDrink = '';
+
+// Streamerbot client set-up
+const SBclient = new StreamerbotClient({
+    host: '127.0.0.1',
+    port: 8080,
+    endpoint: '/',
+    onConnect: async () => {
+        const response = await SBclient.getActions();
+        drinkActionId = response.actions.find(action => action['name'] === config.drinkActionName).id;
+        chatActionId  = response.actions.find(action => action['name'] === config.chatActionName).id;
+    }
+});
+
 
 // ANIMATIONS
 // Picks a bottle of mixer
@@ -319,19 +336,46 @@ const request_tl = createTimeline({
     .sync(hideDrink);
 
 const requestedDrink = (username) => {
-    console.log(username);
     hideDrink.complete();
     emptyAll();
     toggleGroup('shaker', '00');
     attractmode_tl.revert();
     Howler.volume(config.requestVolume);
-    switchDrink(username);
+    lastDrink = switchDrink(username);
     request_tl.play();
 };
 
-// Drink requested as determined by OBS Websocket message
-window.addEventListener('obs-drink-req', function(event) {
-    // console.log(event.detail);
-    let username = `${event.detail.user_req}`;
-    requestedDrink(username);
+SBclient.on('Raw.Action', async (action) => {
+    if (action.data.actionId == drinkActionId) {
+        requestedDrink(action.data.user.display);
+        await SBclient.doAction( `${chatActionId}` ,
+            {
+                "reqUser": action.data.user.name,
+                "reqDrink": lastDrink
+            }
+        );
+    }
 });
+
+// DEPRECATED But keeping the knowledge just in case
+
+// Drink requested as determined by OBS Websocket message
+// window.addEventListener('obs-drink-req', function(event) {
+//     // console.log(event.detail);
+//     let username = `${event.detail.user_req}`;
+//     requestedDrink(username);
+// });
+
+// Work attached to Twitch rather than SB action. Better to leave it triggered on SB instead
+
+// SBclient.on('Twitch.RewardRedemption', (data) => {
+//     if (data.data.reward.title == "Daily Drink") {
+//         requestedDrink(data.data.user_name);
+//         SBclient.doAction({"name": 'Drink Chat feedback'},
+//             {
+//                 "reqUser": data.data.user_login,
+//                 "reqDrink": lastDrink
+//             }
+//         );
+//     }
+// });

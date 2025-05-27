@@ -37,7 +37,12 @@ const requestedDrink = (username) => {
 const SBclient = new StreamerbotClient({
     host: '127.0.0.1',
     port: 8080,
-    endpoint: '/'
+    endpoint: '/',
+    onConnect: async () => {
+        const response = await SBclient.getActions();
+        drinkActionId = response.actions.find(action => action['name'] === config.drinkActionName).id;
+        chatActionId  = response.actions.find(action => action['name'] === config.chatActionName).id;
+    }
 });
 
 // Animations
@@ -117,12 +122,13 @@ const alert_tl = createTimeline({
 //     requestedDrink(username);
 // });
 
-SBclient.on('Twitch.RewardRedemption', (data) => {
-    if (data.data.reward.title == "Daily Drink") {
-        requestedDrink(data.data.user_name);
-        SBclient.doAction({"name": 'Drink Chat feedback'},
+SBclient.on('Raw.Action', async (action) => {
+    if (action.data.actionId == drinkActionId) {
+        console.log(chatActionId);
+        requestedDrink(action.data.user.display);
+        await SBclient.doAction( `${chatActionId}` ,
             {
-                "reqUser": data.data.user_login,
+                "reqUser": action.data.user.name,
                 "reqDrink": lastDrink
             }
         );

@@ -19,26 +19,13 @@ Config file `config.js` allows for easy adjustment
 - drinkDuration: How long the drink stays on the screen
 - attractDrinkDuration: How long the drink stays on the screen during Attract mode. Faster than the regular.
 
+- drinkActionName: Name of the Streamer.bot action that is tied to the Twitch Redeem
+- chatActionName: Name of the Streamer.bot action that sends an optional chat message
 
-Requires sending a OBS Raw websocket message to specify a username. This is to integrate Streamer.bot properly for handling Twitch Reward requests. 
-`UserDrink` variable is not used at the moment in the visualization.
 
-```
-{
-  "requestType": "CallVendorRequest",
-  "requestData": {
-    "vendorName": "obs-browser",
-    "requestType": "emit_event",
-    "requestData": {
-      "event_name": "obs-drink-req",
-      "event_data": {
-        "user_req": "%user%",
-        "user_drinks": "%UserDrink%"
-      }
-    }
-  }
-}
-```
+Requires the companion Streamer.bot actions that handle chat message and drink count
+
+
 
 ### TO-DO
 - ~~Variable username~~ 
@@ -50,7 +37,7 @@ Requires sending a OBS Raw websocket message to specify a username. This is to i
 - ~~Resolve outstanding issues with OBS Browser Source (Font, drink, username)~~
 - ~~Fix bug when going back to attract after a request~~
 - ~~Testing and integration of Alert mode. Extra slide animation?~~
-- Refactor to work with streamerbot-client
+- ~~Refactor to work with streamerbot-client~~
 - Send chat the drink information in Alert           
 ----
 
