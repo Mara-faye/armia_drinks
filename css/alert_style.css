@@ -49,3 +49,11 @@ body {
     font-size: 2vw;
     place-self: start center;
 }
+
+#info {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2vw;
+    grid-area: 1/1;
+    opacity: 100%;
+    transition: opacity 2s ease-out;
+}

@@ -7,7 +7,7 @@ export const config = {
 
     requestSelectSpeed: 500,
     requestVolume: 0.9,
-    drinkDuration: 10000,
+    drinkDuration: 9000,
 
     arrowsSpeed: 1000,
     arrowsDelay: 5000,

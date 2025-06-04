@@ -2,6 +2,8 @@
 
 Very barebones and hacky way to deliver an animation that will show random cocktails as requested
 
+# Configuration
+
 Config file `config.js` allows for easy adjustment
 - attractDelay: Wait time between demo animation loops
 - attractLoopDelay: Wait time before the demo loop first starts
@@ -22,23 +24,33 @@ Config file `config.js` allows for easy adjustment
 - drinkActionName: Name of the Streamer.bot action that is tied to the Twitch Redeem
 - chatActionName: Name of the Streamer.bot action that sends an optional chat message
 
-
-Requires the companion Streamer.bot actions that handle chat message and drink count
+## Important note
+Requires the companion Streamer.bot actions that handle chat message and drink count  
+Check that Websocket server is set to autostart at `localhost:8080` and that you have the companion actions
 
 
 
 ### TO-DO
-- ~~Variable username~~ 
-- ~~Animated arrows~~
-- ~~Audio elements~~
-- ~~Tablet text~~
-- ~~Different presentation in Attract Mode vs. Request~~
-- ~~Separate alert version that will go on top of other scenes~~
-- ~~Resolve outstanding issues with OBS Browser Source (Font, drink, username)~~
-- ~~Fix bug when going back to attract after a request~~
-- ~~Testing and integration of Alert mode. Extra slide animation?~~
-- ~~Refactor to work with streamerbot-client~~
-- Send chat the drink information in Alert           
+- [x] Variable username 
+- [x] Animated arrows
+- [x] Audio elements
+- [x] Tablet text
+- [x] Different presentation in Attract Mode vs. Request
+- [x] Separate alert version that will go on top of other scenes
+- [x] Resolve outstanding issues with OBS Browser Source (Font, drink, username)
+- [x] Fix bug when going back to attract after a request
+- [x] Testing and integration of Alert mode. Extra slide animation?
+- [x] Refactor to work with streamerbot-client
+- [x] Send chat the drink information in Alert
+- [ ] Reflect the changes of the Alert system in Attract mode
+- [ ] Refactor to use alert_anim as a module
+- [ ] Visual feedback as a separate bar receipt 
+
+### ISSUES
+- [ ] Test actions not calling up a drink
+- [ ] Fix Github relative paths
+
+
 ----
 
 
