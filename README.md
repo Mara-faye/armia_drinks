@@ -47,8 +47,8 @@ Check that Websocket server is set to autostart at `localhost:8080` and that you
 - [ ] Visual feedback as a separate bar receipt 
 
 ### ISSUES
-- [ ] Test actions not calling up a drink
-- [ ] Fix Github relative paths
+- [X] Test actions not calling up a drink. Awaiting further testing to confirm fixed
+- [X] Fix Github relative paths. Temptative fix, shouldn't give issues now.
 
 
 ----
