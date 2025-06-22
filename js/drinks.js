@@ -459,4 +459,14 @@ export const drinks = [
         creator: 'JaneTheSalesWoman',
         file: '92SerenityLowball.png'
     },
+    {
+        name: 'Violet Dream',
+        creator: 'Il_Lilith',
+        file: '93VioletDream.webp'
+    },
+    {
+        name: 'Corvid\'s Breath',
+        creator: 'Linkspoot',
+        file: '94CorvidsBreath.png'
+    },
 ]
