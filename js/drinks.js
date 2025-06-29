@@ -469,4 +469,9 @@ export const drinks = [
         creator: 'Linkspoot',
         file: '94CorvidsBreath.png'
     },
+    {
+        name: 'Snake Shot',
+        creator: 'Luminox',
+        file: '95SnakeShot.webp'
+    },
 ]
