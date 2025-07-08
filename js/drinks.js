@@ -474,4 +474,9 @@ export const drinks = [
         creator: 'Luminox',
         file: '95SnakeShot.webp'
     },
+    {
+        name: 'Canchánchara',
+        creator: 'ComradeBeric',
+        file: '96Canchanchara.png'
+    },
 ]
