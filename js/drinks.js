@@ -479,4 +479,9 @@ export const drinks = [
         creator: 'ComradeBeric',
         file: '96Canchanchara.png'
     },
+    {
+        name: 'Blood Berry Wine',
+        creator: 'Zilla',
+        file: '97BloodBerryWine.png'
+    },
 ]
