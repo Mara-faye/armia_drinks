@@ -489,4 +489,9 @@ export const drinks = [
         creator: 'MischiefKnight',
         file: '98MischiefMaker.png'
     },
+    {
+        name: 'Smurf\'s Blood',
+        creator: 'Claire Kudzu',
+        file: '99SmurfsBlood.png'
+    },
 ]
