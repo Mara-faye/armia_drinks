@@ -1,6 +1,7 @@
 import { config } from '../config.js';
 import { drinks } from './drinks.js';
 import { animate, utils, createTimeline } from '../lib/anime.esm.js';
+import { SBclient } from './streamerbot.js';
 
 // Sounds
 var glassSnd = new Howl({
@@ -15,8 +16,6 @@ var bellSnd = new Howl({
 });
 
 // Helper functions
-let drinkActionId = '';
-let chatActionId = '';
 var lastDrink = '';
 
 const switchDrink = (username) => {
@@ -34,23 +33,6 @@ const requestedDrink = (username) => {
     lastDrink = switchDrink(username);
     alert_tl.restart();
 }
-
-// Streamerbot client set-up
-const SBclient = new StreamerbotClient({
-    host: '127.0.0.1',
-    port: 8080,
-    endpoint: '/',
-    onConnect: async (data) => {
-        utils.set(utils.$('#info'), {'innerHTML': 'SB Connected!', 'opacity': '0%'});
-        const response = await SBclient.getActions();
-        drinkActionId = response.actions.find(action => action['name'] === config.drinkActionName).id;
-        chatActionId  = response.actions.find(action => action['name'] === config.chatActionName).id;
-    },
-    onError: (err) => {
-        console.error('Streamer.bot Client Error', err);
-        utils.set(utils.$('#info'), {'innerHTML': `SB Connection Failed: ${err}`, 'opacity': '80%'});
-    }
-});
 
 // Animations
 const creator_TextSlide = animate('.drink_creator', {
@@ -143,3 +125,9 @@ SBclient.on('Raw.Action', async (action) => {
         );
     }
 });
+
+export { switchDrink, 
+    alert_tl, 
+    caption_TextSlide, creator_TextSlide,
+    coaster, guruguru,
+    showDrink, hideDrink }
