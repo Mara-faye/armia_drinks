@@ -1,5 +1,6 @@
 import { config } from '../config.js';
-import { drinks } from './drinks.js';
+import { drinks as drinks_00 } from './drinks_season00.js';
+import { drinks as drinks_01 } from './drinks_season01.js';
 import { animate, utils, createTimeline } from '../lib/anime.esm.js';
 
 const mixers = ['tail', 'dust', 'cosmo', 'tears', 'milky', 'nebula'];
@@ -75,8 +76,16 @@ const mix_in_shaker = (level) => {
 }
 
 const switchDrink = (username) => {
+    // Random season selection
+    let drinks = Math.random() < config.seasonChance ? drinks_00 : drinks_01;
+
     // Random cocktail selection and appareance
     let newDrink = utils.randomPick(drinks);
+    if (newDrink.name == lastDrink) {
+        //reroll in case it's the same twice in a row
+        newDrink = utils.randomPick(drinks);
+        console.info('Rerolled!');
+    };
     let msg = username==null ? `Armia made herself a ${newDrink.name}~` :
         `Enjoy the ${newDrink.name}, ${username}!` ;
     document.getElementById('cocktail').setAttribute('src', `./Drinks/${newDrink.file}`);

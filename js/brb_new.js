@@ -1,5 +1,5 @@
 import { config } from '../config.js';
-import { drinks } from './drinks.js';
+import { drinks } from './drinks_season00.js';
 import { animate, utils, createTimeline } from '../lib/anime.esm.js';
 import * as alert from './alert_anim.js'
 import { SBclient } from './streamerbot.js'

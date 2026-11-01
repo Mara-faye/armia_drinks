@@ -15,4 +15,6 @@ export const config = {
 
     drinkActionName: "Fancy Drink Test",
     chatActionName: "Drink Chat feedback",
+
+    seasonChance: 0.1,
 };

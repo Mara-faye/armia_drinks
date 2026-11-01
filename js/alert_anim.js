@@ -1,5 +1,6 @@
 import { config } from '../config.js';
-import { drinks } from './drinks.js';
+import { drinks as drinks_00 } from './drinks_season00.js';
+import { drinks as drinks_01 } from './drinks_season01.js';
 import { animate, utils, createTimeline } from '../lib/anime.esm.js';
 import { SBclient } from './streamerbot.js';
 
@@ -19,13 +20,23 @@ var bellSnd = new Howl({
 var lastDrink = '';
 
 const switchDrink = (username) => {
+    // Random season selection
+    let drinks = Math.random() < config.seasonChance ? drinks_00 : drinks_01;
+
     // Random cocktail selection and appareance
     let newDrink = utils.randomPick(drinks);
+    if (newDrink.name == lastDrink) {
+        //reroll in case it's the same twice in a row
+        newDrink = utils.randomPick(drinks);
+        console.info('Rerolled!');
+    };
     let msg = `Enjoy the ${newDrink.name}, ${username}!` ;
     document.getElementById('cocktail').setAttribute('src', `./Drinks/${newDrink.file}`);
     let author = `As created by ${newDrink.creator}`
     utils.set(utils.$('.drink_caption'), {'innerHTML': msg});
     utils.set(utils.$('.drink_creator'), {'innerHTML': author});
+    console.info(newDrink);
+
     return newDrink.name;
 }
 
@@ -103,17 +114,9 @@ const alert_tl = createTimeline({
 .sync(hideDrink);
 
 // Event listeners
-
-// DEPRECATED using the SB listener instead
-// window.addEventListener('obs-drink-req', function(event) {
-//     // console.log(event.detail);
-//     let username = `${event.detail.user_req}`;
-//     requestedDrink(username);
-// });
-
 SBclient.on('Raw.Action', async (action) => {
     if (action.data.actionId == SBclient.drinkActionId) {
-        console.log('Drink requested!');
+        console.info('Drink requested!');
         let user = (action.data.user) ?
             { display: action.data.user.display, name: action.data.user.name } :
             { display: 'Placeholder', name: 'armiastars' }; 
