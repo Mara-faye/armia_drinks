@@ -112,12 +112,13 @@ const alert_tl = createTimeline({
 // });
 
 SBclient.on('Raw.Action', async (action) => {
-    if (action.data.actionId == drinkActionId) {
+    if (action.data.actionId == SBclient.drinkActionId) {
+        console.log('Drink requested!');
         let user = (action.data.user) ?
             { display: action.data.user.display, name: action.data.user.name } :
             { display: 'Placeholder', name: 'armiastars' }; 
         requestedDrink(user.display);
-        await SBclient.doAction( `${chatActionId}` ,
+        await SBclient.doAction( SBclient.chatActionId,
             {
                 "reqUser": user.name,
                 "reqDrink": lastDrink
