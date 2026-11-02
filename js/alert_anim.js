@@ -1,10 +1,10 @@
 import { config } from '../config.js';
-import { drinks as drinks_00 } from './drinks_season00.js';
-import { drinks as drinks_01 } from './drinks_season01.js';
+// import { drinks as drinks_00 } from './drinks_season00.js';
+// import { drinks as drinks_01 } from './drinks_season01.js';
 
 // Ready for switching to JSON format built from ingest.js
-// import drinks_00 from './drinks_s00.json' with { type: 'json' };
-// import drinks_01 from './drinks_s01.json' with { type: 'json' };
+import drinks_00 from './drinks_s00.json' with { type: 'json' };
+import drinks_01 from './drinks_s01.json' with { type: 'json' };
 import { animate, utils, createTimeline } from '../lib/anime.esm.js';
 import { SBclient } from './streamerbot.js';
 

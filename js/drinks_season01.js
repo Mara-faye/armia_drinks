@@ -27,7 +27,7 @@ export const drinks = [
     {
         name: 'Liquor-ice',
         creator: 'OishiiO ',
-        file: '137LiquorIce.png'
+        file: '137Liquorice.png'
     },
     {
         name: 'Firesale',

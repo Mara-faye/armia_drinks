@@ -1,6 +1,7 @@
 {
   "name": "armia_drinks",
   "version": "1.3.0",
+  "type": "module",
   "description": "Very barebones and hacky way to deliver an animation that will show random cocktails as requested",
   "scripts": {
     "ingest": "node ingest.js"
