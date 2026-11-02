@@ -1,0 +1,22 @@
+{
+  "name": "armia_drinks",
+  "version": "1.3.0",
+  "description": "Very barebones and hacky way to deliver an animation that will show random cocktails as requested",
+  "scripts": {
+    "ingest": "node ingest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mara-faye/armia_drinks.git"
+  },
+  "keywords": [],
+  "author": "Mara Faye",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mara-faye/armia_drinks/issues"
+  },
+  "homepage": "https://github.com/Mara-faye/armia_drinks#readme",
+  "dependencies": {
+    "dotenv": "^18.0.9"
+  }
+}
